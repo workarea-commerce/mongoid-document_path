@@ -6,9 +6,17 @@ class Mongoid::DocumentPathTest < Minitest::Test
     include Mongoid::DocumentPath
 
     embeds_one :customer
+    embeds_many :items
   end
 
   class Customer
+    include Mongoid::Document
+    include Mongoid::DocumentPath
+
+    embedded_in :order
+  end
+
+  class Item
     include Mongoid::Document
     include Mongoid::DocumentPath
 
@@ -47,5 +55,24 @@ class Mongoid::DocumentPathTest < Minitest::Test
     assert_nil(document_path.second.relation)
 
     assert_equal(Mongoid::DocumentPath.find(document_path), customer)
+  end
+
+  def test_embedded_collection_document_paths
+    order = Order.create!
+    order.items.create!
+    item = order.items.create!
+    document_path = item.document_path
+
+    assert_equal(document_path.length, 2)
+
+    assert_equal(document_path.first.type, Order.name)
+    assert_equal(document_path.first.document_id, order.id.to_s)
+    assert_equal(document_path.first.relation, 'items')
+
+    assert_equal(document_path.second.type, Item.name)
+    assert_equal(document_path.second.document_id, item.id.to_s)
+    assert_nil(document_path.second.relation)
+
+    assert_equal(Mongoid::DocumentPath.find(document_path), item)
   end
 end
