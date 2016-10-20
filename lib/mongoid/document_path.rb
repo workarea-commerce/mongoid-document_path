@@ -15,6 +15,10 @@ module Mongoid
       def matches?(document)
         document.class.name == type && document.id.to_s == document_id
       end
+
+      def terminal?
+        relation.blank?
+      end
     end
 
     extend ActiveSupport::Concern
@@ -30,12 +34,10 @@ module Mongoid
           relation_match = if node.matches?(current)
                              current
                            elsif current.respond_to?(:detect)
-                             current.detect do |document|
-                               node.matches?(document)
-                             end
+                             current.detect { |d| node.matches?(d) }
                            end
 
-          if node.relation.blank?
+          if node.terminal?
             return relation_match
           else
             relation_match.send(node.relation)
