@@ -28,7 +28,7 @@ module Mongoid
     end
 
     def document_path(node = self, current_relation = nil)
-      relation = node.embedded? ? node.metadata_name.to_s : nil
+      relation = node.embedded? ? node.association_name : nil
       list = node._parent ? document_path(node._parent, relation) : []
 
       list << Node.new(
