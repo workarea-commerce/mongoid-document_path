@@ -13,6 +13,8 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/weblinc/mongoid-document_path.git"
   spec.license       = "MIT"
 
+  spec.required_ruby_version = [">= 2.7", "< 3.5"]
+
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
@@ -20,8 +22,8 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'mongoid', '>= 7.0'
 
-  spec.add_development_dependency "bundler", "~> 1.11"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "bundler", ">= 2.0"
+  spec.add_development_dependency "rake", "~> 13.0"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency 'minitest-reporters', '~> 1.1.14'
 end

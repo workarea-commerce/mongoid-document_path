@@ -5,14 +5,14 @@ require 'minitest/autorun'
 require 'minitest/reporters'
 
 Mongoid.configure do |config|
- config.connect_to('mongoid_audit_log_test')
+  config.connect_to('mongoid_document_path_test')
 end
 
 Minitest::Reporters.use! [
- Minitest::Reporters::DefaultReporter.new(color: true)
+  Minitest::Reporters::DefaultReporter.new(color: true)
 ]
 
-class MiniTest::Unit::TestCase
+class Minitest::Test
   def before_setup
     Mongoid.purge!
   end
